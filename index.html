@@ -1,426 +1,53 @@
-<!doctype html>
-
 <html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8" />
-        <title>Image Editor</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-        <style>
-            @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+<head>
+  <meta charset="utf-8" />
+  <title>Image Editor</title>
 
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: "Poppins", sans-serif;
-            }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <!-- Font Awesome CDN link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 
-            body {
-                display: flex;
-                padding: 10px;
-                min-height: 100vh;
-                align-items: center;
-                justify-content: center;
-                background: #2F2F2F;
-            }
+</head>
 
-            .title-top {
-                width: 100%;
-                text-align: center;
-                font-optical-sizing: auto;
-                text-transform: uppercase;
-                justify-content: center;
-                align-content: center;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                color: #524f4d;
-                background-color: #2F2F2F;
-                border-style: inset;
-                box-shadow: inset 0 0 20px rgba(19, 18, 18, 0.5);
-                border-width: 1px;
-                border-color: #2f2f2f;
-                border-radius: 25px;
-                margin-bottom: 30px;
-            }
+<body>
+  <div class="container disable">
+    <div class="title-top">
+      <h3>Image Editor</h3>
+    </div>
+    <div class="wrapper">
+      <div class="editor-panel">
+        <div class="editOptions">
+          <button id="filter" class="selected">Filter</button>
+          <button id="crop">Crop</button>
+          <button id="rotate">Rotate</button>
+        </div>
+        <div class="crop" id="cropItems">
+          <label class="title">Crop</label>
+          <div class="options">
+            <button id="one" class="active">1
+              X 1</button>
+            <button id="two">4
+              X 3</button>
+            <button id="three">
+              16 X 9
+            </button>
+            <button id="four">Free</button>
 
-            .container {
-                width: 850px;
-                padding: 30px 35px 35px;
-                background: #fff;
-                border-radius: 10px;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            }
-
-            .container.disable .editor-panel,
-            .container.disable .controls .reset-filter,
-            .container.disable .controls .save-img {
-                opacity: 0.5;
-                pointer-events: none;
-            }
-
-            /* .crop {
-            display: none;
-        }
-
-        .crop .active {
-            display: block;
-        } */
-
-            .container h2 {
-                margin-top: -8px;
-                font-size: 22px;
-                font-weight: 500;
-            }
-
-            .container .wrapper {
-                display: flex;
-                margin: 20px 0;
-                min-height: 335px;
-            }
-
-            .wrapper .editor-panel {
-                padding: 15px 20px;
-                width: 280px;
-                border-radius: 5px;
-                border: 1px solid #ccc;
-            }
-
-            .editor-panel .title {
-                display: block;
-                font-size: 16px;
-                margin-bottom: 12px;
-            }
-
-            .editor-panel .options,
-            .controls {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
-            }
-
-            .editor-panel button {
-                outline: none;
-                height: 40px;
-                font-size: 14px;
-                color: #6c757d;
-                background: #fff;
-                border-radius: 3px;
-                margin-bottom: 8px;
-                border: 1px solid #aaa;
-            }
-
-            .editor-panel .editOptions button {
-                width: calc(100% / 3 - 4px);
-            }
-
-            .editor-panel .editOptions button.selected {
-                color: #fff;
-                border-color: #2F2F2F;
-                background: #2F2F2F;
-                /* width: calc(100% / 3 - 4px); */
-            }
-
-            .editor-panel .filter button {
-                width: calc(100% / 2 - 4px);
-            }
-
-            .editor-panel .crop button {
-                width: calc(100% - 4px);
-                background-color: #2F2F2F;
-                color: white;
-            }
-
-            .crop button.active,
-            .filter button.active {
-                color: #fff;
-                border-color: #2F2F2F;
-                background: #2F2F2F;
-            }
-
-            .crop .cropSlider,
-            .filter .slider {
-                margin-top: 12px;
-            }
-
-            .crop .cropSlider .crop-info,
-            .filter .slider .filter-info {
-                display: flex;
-                color: #464646;
-                font-size: 14px;
-                justify-content: space-between;
-            }
-
-            .crop .cropSlider input,
-            .filter .slider input {
-                width: 100%;
-                height: 5px;
-                accent-color: #2F2F2F;
-            }
-
-            .editor-panel .rotate {
-                margin-top: 17px;
-            }
-
-            .editor-panel .rotate button {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: calc(100% / 4 - 3px);
-            }
-
-            .rotate .options button:nth-child(3),
-            .rotate .options button:nth-child(4) {
-                font-size: 18px;
-            }
-
-            .rotate .options button:active {
-                color: #fff;
-                background: #2F2F2F;
-                border-color: #2F2F2F;
-            }
-
-            .wrapper .preview-img {
-                flex-grow: 1;
-                display: flex;
-                overflow: hidden;
-                margin-left: 20px;
-                border-radius: 5px;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-            }
-
-            .preview-img img {
-                max-width: 500px;
-                margin: 5%;
-            }
-
-            #cropCanvas {
-                max-width: 300px;
-                max-height: 300px;
-            }
-
-            .controls button {
-                padding: 11px 20px;
-                font-size: 14px;
-                border-radius: 3px;
-                outline: none;
-                color: #fff;
-                cursor: pointer;
-                background: none;
-                transition: all 0.3s ease;
-                text-transform: uppercase;
-            }
-
-            .controls .reset-crop,
-            .controls .reset-filter {
-                color: #6c757d;
-                border: 1px solid #6c757d;
-            }
-
-            .controls .reset-crop:hover,
-            .controls .reset-filter:hover {
-                color: #fff;
-                background: #6c757d;
-            }
-
-            .controls .choose-img {
-                background: #6c757d;
-                border: 1px solid #6c757d;
-            }
-
-            .controls .save-img {
-                margin-left: 5px;
-                background: #2F2F2F;
-                border: 1px solid #2F2F2F;
-            }
-            #left,
-            #right,
-            #horizontal,
-            #vertical {
-                /* Add these styles to ensure the image fits within the button */
-                /* width: 100px;  */
-
-                border: 1px solid gray;
-
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            #left img,
-            #right img,
-            #horizontal img,
-            #vertical img {
-                /* Set the image to fit within the button */
-                max-width: 40%; /* Ensure the image doesn't exceed the button's width */
-                max-height: 40%; /* Ensure the image doesn't exceed the button's height */
-                margin: auto;
-            }
-
-            @media screen and (max-width: 760px) {
-                .container {
-                    padding: 25px;
-                }
-
-                .container .wrapper {
-                    flex-wrap: wrap-reverse;
-                }
-
-                .wrapper .editor-panel {
-                    width: 100%;
-                }
-
-                .wrapper .preview-img {
-                    width: 100%;
-                    margin: 0 0 15px;
-                }
-            }
-
-            @media screen and (max-width: 500px) {
-                .controls button {
-                    width: 100%;
-                    margin-bottom: 10px;
-                }
-
-                .controls .row {
-                    width: 100%;
-                }
-
-                .controls .row .save-img {
-                    margin-left: 0px;
-                }
-            }
-
-            #canvasContainer {
-                position: relative;
-                overflow: hidden;
-            }
-
-            #cropBox {
-                position: absolute;
-                border: 2px dashed red;
-            }
-
-            .resize-handle {
-                position: absolute;
-                width: 8px;
-                height: 8px;
-                background-color: #fff;
-                border: 1px solid #000;
-            }
-
-            #topLeftHandle {
-                top: -4px;
-                left: -4px;
-                cursor: nwse-resize;
-            }
-
-            #topRightHandle {
-                top: -4px;
-                right: -4px;
-                cursor: nesw-resize;
-            }
-
-            #bottomLeftHandle {
-                bottom: -4px;
-                left: -4px;
-                cursor: nesw-resize;
-            }
-
-            #bottomRightHandle {
-                bottom: -4px;
-                right: -4px;
-                cursor: nwse-resize;
-            }
-
-            canvas {
-                display: block;
-                max-width: 100%;
-                height: auto;
-            }
-            
-            /* FOOTER */
-.footer {
-    position: fixed;
-    font-weight: 600;
-    height: 20px;
-    font-size: 11px;
-    left: 0;
-    bottom: 0;
-    color: #4d4242; /* Text color */
-    text-align: center;
-    padding: 20px 0; /* Padding for content */
-    z-index: 1000; /* Ensure it's above other content */
-    text-align: center;
-    width: 100%;
-                font-optical-sizing: auto;
-                text-transform: uppercase;
-                justify-content: center;
-                align-content: center;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                color: #524f4d;
-                background-color: #212121;
-                border-style: inset;
-                box-shadow: inset 0 0 25px rgba(19, 18, 18, 0.5);
-                border-width: 1px;
-                border-color: #2f2f2f;
-
-}
-
-
-        </style>
-    </head>
-
-    <body>
-        <div class="container disable">
-            <div class="title-top">
-                <h3>Image Editor</h3>
+          </div>
+          <div class="cropSlider" id="cropSlider1">
+            <div class="cropButtons">
+              <div class="crop-info">
+                <p class="name">Aspect Ratio</p>
+              </div>
+              <button id="applyCrop" onclick="cropImage()">
+                Apply
+              </button>
             </div>
-            <div class="wrapper">
-                <div class="editor-panel">
-                    <div class="editOptions">
-                        <button id="filter" class="selected">Filter</button>
-                        <button id="crop">Crop</button>
-                        <button id="rotate">Rotate</button>
-                    </div>
-                    <div class="crop" id="cropItems">
-                        <label class="title">Crop</label>
-                         <div
-                        class="options">
-                        <button id="one"
-                            class="active">1
-                            X 1</button>
-                        <button
-                            id="two">4
-                            X 3</button>
-                        <button
-                            id="three">
-                            16 X 9
-                        </button>
-                        <button
-                            id="four">Free</button>
-
-                    </div>
-                        <div class="cropSlider" id="cropSlider1">
-                            <div class="cropButtons">
-                                <div class="crop-info">
-                                    <p class="name">Aspect Ratio</p>
-                                </div>
-                                <button id="applyCrop" onclick="cropImage()">
-                                    Apply
-                                </button>
-                            </div>
-                            <!-- <div
+            <!-- <div
                             class="crop-info">
                             <p
                                 class="name">
@@ -431,533 +58,94 @@
                                 100%
                             </p>
                         </div> -->
-                            <!-- <input
+            <!-- <input
                             type="range"
                             value="100"
                             min="0"
                             max="100"> -->
-                        </div>
-                        <div
-                            class="cropSlider"
-                            id="cropSlider2"
-                            style="display: none">
-                            <div class="crop-info">
-                                <p class="name">Height</p>
-                                <p class="value">100%</p>
-                            </div>
-                            <input type="range" value="100" min="0" max="100" />
-                        </div>
-                    </div>
-                    <div class="filter" id="filterBox">
-                        <label class="title">Filters</label>
-                        <div class="options">
-                            <button id="brightness" class="active">
-                                Brightness
-                            </button>
-                            <button id="saturation">Saturation</button>
-                            <button id="inversion">Inversion</button>
-                            <button id="grayscale">Grayscale</button>
-                        </div>
-                        <div class="slider">
-                            <div class="filter-info">
-                                <p class="name">Brighteness</p>
-                                <p class="value">100%</p>
-                            </div>
-                            <input type="range" value="100" min="0" max="200" />
-                        </div>
-                    </div>
-                    <div class="rotate" id="rotateBox">
-                        <label class="title">Rotate & Flip</label>
-                        <div class="options">
-                            <button id="left">
-                                <!-- <i
-                                class="fa-solid fa-rotate-left"></i> -->
-                                <img
-                                    src="https://media.geeksforgeeks.org/wp-content/uploads/20231212171006/rotate-left.png"
-                                    alt="" />
-                            </button>
-                            <button id="right">
-                                <img
-                                    src="https://media.geeksforgeeks.org/wp-content/uploads/20231212172841/rotate-right.png"
-                                    alt="" />
-                            </button>
-                            <button id="horizontal">
-                                <img
-                                    src="https://media.geeksforgeeks.org/wp-content/uploads/20231212173054/flip.png"
-                                    alt="" />
-                            </button>
-                            <button id="vertical">
-                                <img
-                                    src="https://media.geeksforgeeks.org/wp-content/uploads/20231212181314/vertical.png"
-                                    alt="" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="preview-img" id="canvasContainer">
-                    <input
-                        type="file"
-                        id="inpImage"
-                        class="file-input"
-                        accept="image/*"
-                        hidden />
-
-                    <img
-                        id="cropCanvas"
-                        src="https://r2.easyimg.io/g4vz5dkyv/upload.png"
-                        alt="preview-img" />
-                    <div id="cropBox">
-                        <div id="topLeftHandle" class="resize-handle"></div>
-                        <div id="topRightHandle" class="resize-handle"></div>
-                        <div id="bottomLeftHandle" class="resize-handle"></div>
-                        <div id="bottomRightHandle" class="resize-handle"></div>
-                    </div>
-                    <p>Image Preview</p>
-                    <!-- <button class="choose-img">Choose Image</button> -->
-                </div>
+          </div>
+          <div class="cropSlider" id="cropSlider2" style="display: none">
+            <div class="crop-info">
+              <p class="name">Height</p>
+              <p class="value">100%</p>
             </div>
-            <div class="controls">
-                <button class="reset-filter">Reset Filters</button>
-                <div class="row">
-                    <input
-                        type="file"
-                        class="file-input"
-                        accept="image/*"
-                        hidden />
-                    <button class="choose-img">Upload Image</button>
-                    <button class="save-img">Save Image</button>
-                </div>
-            </div>
+            <input type="range" value="100" min="0" max="100" />
+          </div>
         </div>
+        <div class="filter" id="filterBox">
+          <label class="title">Filters</label>
+          <div class="options">
+            <button id="brightness" class="active">
+              Brightness
+            </button>
+            <button id="saturation">Saturation</button>
+            <button id="inversion">Inversion</button>
+            <button id="grayscale">Grayscale</button>
+          </div>
+          <div class="slider">
+            <div class="filter-info">
+              <p class="name">Brighteness</p>
+              <p class="value">100%</p>
+            </div>
+            <input type="range" value="100" min="0" max="200" />
+          </div>
+        </div>
+        <div class="rotate" id="rotateBox">
+          <label class="title">Rotate & Flip</label>
+          <div class="options">
+            <button id="left">
+              <!-- <i
+                                class="fa-solid fa-rotate-left"></i> -->
+              <img src="https://media.geeksforgeeks.org/wp-content/uploads/20231212171006/rotate-left.png" alt="" />
+            </button>
+            <button id="right">
+              <img src="https://media.geeksforgeeks.org/wp-content/uploads/20231212172841/rotate-right.png" alt="" />
+            </button>
+            <button id="horizontal">
+              <img src="https://media.geeksforgeeks.org/wp-content/uploads/20231212173054/flip.png" alt="" />
+            </button>
+            <button id="vertical">
+              <img src="https://media.geeksforgeeks.org/wp-content/uploads/20231212181314/vertical.png" alt="" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="preview-img" id="canvasContainer">
+        <input type="file" id="inpImage" class="file-input" accept="image/*" hidden />
 
-        <script>
-            const fileInput = document.querySelector(".file-input"),
-                editOptions = document.querySelectorAll(".editOptions button"),
-                filterOptions = document.querySelectorAll(".filter button"),
-                filterName = document.querySelector(".filter-info .name"),
-                filterValue = document.querySelector(".filter-info .value"),
-                filterSlider = document.querySelector(".slider input"),
-                cropOptions = document.querySelectorAll(".crop button"),
-                cropName = document.querySelector(".crop-info .name"),
-                cropValue = document.querySelector(".crop-info .value"),
-                // cropSlider = document.querySelector("#cropSlider1 input"),
+        <img id="cropCanvas" src="https://r2.easyimg.io/g4vz5dkyv/upload.png" alt="preview-img" />
+        <div id="cropBox">
+          <div id="topLeftHandle" class="resize-handle"></div>
+          <div id="topRightHandle" class="resize-handle"></div>
+          <div id="bottomLeftHandle" class="resize-handle"></div>
+          <div id="bottomRightHandle" class="resize-handle"></div>
+        </div>
+        <p>Image Preview</p>
+        <!-- <button class="choose-img">Choose Image</button> -->
+      </div>
+    </div>
+    <div class="controls">
+      <button class="reset-filter">Reset Filters</button>
+      <div class="row">
+        <input type="file" class="file-input" accept="image/*" hidden />
+        <button class="choose-img"> <i class="fas fa-upload"> </i>&nbsp; Upload Image</button>
+        <button class="save-img"> <i class="fas fa-save"></i>&nbsp; Save Image</button>
+      </div>
+    </div>
+  </div>
 
-                rotateOptions = document.querySelectorAll(".rotate button"),
-                previewImg = document.querySelector(".preview-img img"),
-                resetFilterBtn = document.querySelector(".reset-filter"),
-                chooseImgBtn = document.querySelector(".choose-img"),
-                saveImgBtn = document.querySelector(".save-img");
+  <script src="script.js"></script>
 
-            let image,
-                styles = null;
-            let rect2;
 
-            document.getElementById("filterBox").style.display = "block";
-            document.getElementById("cropItems").style.display = "none";
-            document.getElementById("rotateBox").style.display = "none";
+  <!-- Footer Section -->
+  <div class="footer" id="copyright">
+    &copy; 2004 -<span id="year"></span> Image Editor - ICT Click Digital Media.
+    <script>
+      // Get the current year
+      var currentYear = new Date().getFullYear();
+      // Set the current year in the footer
+      document.getElementById("year").textContent = currentYear;
+    </script>
+</body>
 
-            let brightness = "100",
-                saturation = "100",
-                inversion = "0",
-                grayscale = "0";
-            let rotate = 0,
-                flipHorizontal = 1,
-                flipVertical = 1;
-            let one = (two = three = four = "100");
-            let resetFlag = true;
-
-            const loadImage = () => {
-                let file = fileInput.files[0];
-                if (!file) return;
-                previewImg.src = URL.createObjectURL(file);
-                previewImg.addEventListener("load", () => {
-                    // document.querySelector(".crop").style.display = "block"
-                    if (resetFlag) resetFilterBtn.click();
-                    resetFlag = true;
-                    document
-                        .querySelector(".container")
-                        .classList.remove("disable");
-                });
-                image = new Image();
-                image.src = URL.createObjectURL(file);
-                image.onload = function () {
-                    // Resize canvas to fit the image
-                };
-            };
-
-            const applyFilter = () => {
-                previewImg.style.transform = `rotate(${rotate}deg) scale(${flipHorizontal}, ${flipVertical})`;
-                previewImg.style.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%)`;
-                previewImg.style.width = one.value;
-                styles = previewImg.style;
-            };
-
-            editOptions.forEach((option) => {
-                option.addEventListener("click", () => {
-                    document
-                        .querySelector(".selected")
-                        .classList.remove("selected");
-                    option.classList.add("selected");
-                    cropBox.style.display = "none";
-
-                    // filterName.innerText = option.innerText;
-                    document
-                        .querySelector(".active")
-                        ?.classList.remove("active");
-
-                    if (option.id === "filter") {
-                        document.getElementById("filterBox").style.display =
-                            "block";
-                        document.getElementById("cropItems").style.display =
-                            "none";
-                        document.getElementById("rotateBox").style.display =
-                            "none";
-
-                        document.getElementById("brightness").classList =
-                            "active";
-                    } else if (option.id === "crop") {
-                        document.getElementById("filterBox").style.display =
-                            "none";
-                        document.getElementById("cropItems").style.display =
-                            "block";
-                        document.getElementById("rotateBox").style.display =
-                            "none";
-                        // document.getElementById("one").classList = "active";
-                        enableCropping();
-                    } else {
-                        document.getElementById("filterBox").style.display =
-                            "none";
-                        document.getElementById("cropItems").style.display =
-                            "none";
-                        document.getElementById("rotateBox").style.display =
-                            "block";
-                    }
-                });
-            });
-
-            filterOptions.forEach((option) => {
-                option.addEventListener("click", () => {
-                    document
-                        .querySelector(".active")
-                        .classList.remove("active");
-                    option.classList.add("active");
-                    filterName.innerText = option.innerText;
-
-                    if (option.id === "brightness") {
-                        filterSlider.max = "200";
-                        filterSlider.value = brightness;
-                        filterValue.innerText = `${brightness}%`;
-                    } else if (option.id === "saturation") {
-                        filterSlider.max = "200";
-                        filterSlider.value = saturation;
-                        filterValue.innerText = `${saturation}%`;
-                    } else if (option.id === "inversion") {
-                        filterSlider.max = "100";
-                        filterSlider.value = inversion;
-                        filterValue.innerText = `${inversion}%`;
-                    } else {
-                        filterSlider.max = "100";
-                        filterSlider.value = grayscale;
-                        filterValue.innerText = `${grayscale}%`;
-                    }
-                });
-            });
-
-            // cropOptions.forEach(option => {
-            //     option.addEventListener("click", () => {
-            //         document.querySelector(".active").classList.remove("active");
-            //         option.classList.add("active");
-            //         // cropSlider2.style.display = "none";
-
-            //         cropName.innerText = option.innerText != "Free" ? "Aspect Ratio " + option.innerText : "Width";
-
-            //         if (option.id === "one") {
-            //             // cropSlider.max = "200";
-            //             // cropSlider.value = one;
-            //             cropValue.innerText = `${one}%`;
-            //         } else if (option.id === "two") {
-            //             // cropSlider.max = "200";
-            //             // cropSlider.value = two;
-            //             cropValue.innerText = `${two}%`
-            //         } else if (option.id === "three") {
-            //             // cropSlider.max = "100";
-            //             // cropSlider.value = three;
-            //             cropValue.innerText = `${three}%`;
-            //         } else {
-            //             // cropSlider.max = "100";
-            //             // cropSlider.value = four;
-            //             cropValue.innerText = `${four}%`;
-            //             // cropSlider2.style.display = "block";
-
-            //         }
-            //     });
-            // });
-
-            const updateFilter = () => {
-                filterValue.innerText = `${filterSlider.value}%`;
-                const selectedFilter =
-                    document.querySelector(".filter .active");
-
-                if (selectedFilter.id === "brightness") {
-                    brightness = filterSlider.value;
-                } else if (selectedFilter.id === "saturation") {
-                    saturation = filterSlider.value;
-                } else if (selectedFilter.id === "inversion") {
-                    inversion = filterSlider.value;
-                } else {
-                    grayscale = filterSlider.value;
-                }
-                applyFilter();
-            };
-
-            const updateCrop = () => {
-                cropValue.innerText = `${cropSlider.value}%`;
-                const selectedCrop = document.querySelector(".crop .active");
-
-                if (selectedCrop.id === "one") {
-                    one = cropSlider.value;
-                } else if (selectedCrop.id === "two") {
-                    two = cropSlider.value;
-                } else if (selectedCrop.id === "three") {
-                    three = cropSlider.value;
-                } else {
-                    four = cropSlider.value;
-                }
-                applyFilter();
-            };
-
-            rotateOptions.forEach((option) => {
-                option.addEventListener("click", () => {
-                    if (option.id === "left") {
-                        rotate -= 90;
-                    } else if (option.id === "right") {
-                        rotate += 90;
-                    } else if (option.id === "horizontal") {
-                        flipHorizontal = flipHorizontal === 1 ? -1 : 1;
-                    } else {
-                        flipVertical = flipVertical === 1 ? -1 : 1;
-                    }
-                    applyFilter();
-                });
-            });
-
-            const resetFilter = () => {
-                brightness = "100";
-                saturation = "100";
-                inversion = "0";
-                grayscale = "0";
-                rotate = 0;
-                flipHorizontal = 1;
-                flipVertical = 1;
-                filterOptions[0].click();
-                applyFilter();
-            };
-
-            const saveImage = () => {
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
-                canvas.width = previewImg.naturalWidth;
-                canvas.height = previewImg.naturalHeight;
-
-                ctx.filter = `brightness(${brightness}%) saturate(${saturation}%) invert(${inversion}%) grayscale(${grayscale}%)`;
-                ctx.translate(canvas.width / 2, canvas.height / 2);
-                if (rotate !== 0) {
-                    ctx.rotate((rotate * Math.PI) / 180);
-                }
-                ctx.scale(flipHorizontal, flipVertical);
-                ctx.drawImage(
-                    previewImg,
-                    -canvas.width / 2,
-                    -canvas.height / 2,
-                    canvas.width,
-                    canvas.height
-                );
-
-                const link = document.createElement("a");
-                link.download = "image.jpg";
-                link.href = canvas.toDataURL();
-                link.click();
-            };
-            // cropSlider.addEventListener("input", updateCrop);
-            filterSlider.addEventListener("input", updateFilter);
-            resetFilterBtn.addEventListener("click", resetFilter);
-            saveImgBtn.addEventListener("click", saveImage);
-            fileInput.addEventListener("change", loadImage);
-            chooseImgBtn.addEventListener("click", () => fileInput.click());
-
-            // crop image functionality
-            const imageInput = document.getElementById("imageInput");
-            const canvasContainer = document.getElementById("canvasContainer");
-            const cropBox = document.getElementById("cropBox");
-            cropBox.style.display = "none";
-            const cropCanvas = document.getElementById("cropCanvas");
-
-            let resizing = false;
-            let currentHandle;
-
-            function enableCropping() {
-                rect2 = cropCanvas.getBoundingClientRect();
-                cropBox.style.display = "block";
-                cropBox.style.width = rect2.width / 2 + "px";
-                cropBox.style.height = rect2.height / 2 + "px";
-                updateResizeHandles();
-            }
-
-            function updateResizeHandles() {
-                const handles = [
-                    "topLeft",
-                    "topRight",
-                    "bottomLeft",
-                    "bottomRight"
-                ];
-
-                handles.forEach((handle) => {
-                    const handleElement = document.getElementById(
-                        handle + "Handle"
-                    );
-                    handleElement.addEventListener(
-                        "mousedown",
-                        function (event) {
-                            startResize(event, handle);
-                        }
-                    );
-                });
-            }
-
-            function startResize(event, handle) {
-                console.log("start");
-                resizing = true;
-                currentHandle = handle;
-
-                const rect = cropBox.getBoundingClientRect();
-                const offsetX = event.clientX - rect.left;
-                const offsetY = event.clientY - rect.top;
-
-                document.addEventListener("mousemove", function (event) {
-                    handleResize(event, offsetX, offsetY);
-                });
-
-                document.addEventListener("mouseup", function () {
-                    endResize();
-                });
-            }
-
-            function handleResize(event, offsetX, offsetY) {
-                if (resizing) {
-                    console.log(currentHandle);
-
-                    const rect = canvasContainer.getBoundingClientRect();
-                    const x = event.clientX - rect.left;
-                    const y = event.clientY - rect.top;
-                    console.log(x, y, offsetX, offsetY);
-                    switch (currentHandle) {
-                        case "topLeft":
-                            resizeTopLeft(x, y, offsetX, offsetY);
-                            break;
-                        case "topRight":
-                            resizeTopRight(x, y, offsetX, offsetY);
-                            break;
-                        case "bottomLeft":
-                            resizeBottomLeft(x, y, offsetX, offsetY);
-                            break;
-                        case "bottomRight":
-                            resizeBottomRight(x, y, offsetX, offsetY);
-                            break;
-                    }
-                }
-            }
-
-            function endResize() {
-                resizing = false;
-                currentHandle = null;
-            }
-
-            function resizeTopLeft(x, y, offsetX, offsetY) {
-                console.log("topleft");
-                const newWidth =
-                    parseInt(cropBox.style.width) + (cropBox.offsetLeft - x);
-                const newHeight =
-                    parseInt(cropBox.style.height) + (cropBox.offsetTop - y);
-
-                cropBox.style.width = `${newWidth}px`;
-                cropBox.style.height = `${newHeight}px`;
-                cropBox.style.left = `${x}px`;
-                cropBox.style.top = `${y}px`;
-            }
-
-            function resizeTopRight(x, y, offsetX, offsetY) {
-                const newWidth = x - cropBox.offsetLeft; //
-                const newHeight =
-                    parseInt(cropBox.style.height) + (cropBox.offsetTop - y);
-                console.log(newHeight, newWidth);
-                cropBox.style.width = `${newWidth}px`;
-                cropBox.style.height = `${newHeight}px`;
-                cropBox.style.right = `${x}px`;
-                cropBox.style.top = `${y}px`;
-            }
-
-            function resizeBottomLeft(x, y, offsetX, offsetY) {
-                const newWidth =
-                    parseInt(cropBox.style.width) + (cropBox.offsetLeft - x);
-                const newHeight = y - cropBox.offsetTop; //+ offsetY;
-
-                cropBox.style.width = `${newWidth}px`;
-                cropBox.style.height = `${newHeight}px`;
-                cropBox.style.left = `${x}px`;
-            }
-
-            function resizeBottomRight(x, y, offsetX, offsetY) {
-                const newWidth = x - cropBox.offsetLeft; //+ offsetX;
-                const newHeight = y - cropBox.offsetTop; // + offsetY;
-
-                cropBox.style.width = `${newWidth}px`;
-                cropBox.style.height = `${newHeight}px`;
-            }
-
-            function cropImage() {
-                image.onload();
-                const rect = cropBox.getBoundingClientRect();
-                rect2 = cropCanvas.getBoundingClientRect();
-                8;
-                // Create a new canvas for the cropped image
-                const croppedCanvas = document.createElement("canvas");
-                const croppedCtx = croppedCanvas.getContext("2d");
-
-                // Set the new canvas size to the crop box dimensions
-                croppedCanvas.width = (rect.width * image.width) / rect2.width;
-                croppedCanvas.height =
-                    (rect.height * image.height) / rect2.height;
-                //  console.log(rect, rect2, image.height)
-                //  Draw the cropped region onto the new canvas
-                croppedCtx.drawImage(
-                    image, // Source image (the original image)
-                    0, // Source rectangle's left coordinate
-                    0, // Source rectangle's top coordinate
-                    image.width, // Source rectangle's width
-                    image.height, // Source rectangle's height
-                    ((rect2.left - rect.left) * image.width) / rect2.width, // Destination canvas's left coordinate
-                    ((rect2.top - rect.top) * image.height) / rect2.height, // Destination canvas's top coordinate
-                    image.width, // Destination canvas's width
-                    image.height // Destination canvas's height
-                );
-
-                previewImg.src = croppedCanvas.toDataURL();
-                resetFlag = false;
-                console.log(previewImg.style);
-                image.src = croppedCanvas.toDataURL();
-            }
-
-            function updateFilters() {}
-        </script>
-        
-        <!-- Footer Section -->
-        <div class="footer" id="copyright">
-            &copy; 2004 -<span id="year"></span> Image Editor - ICT Click Digital Media. 
-        <script>
-    // Get the current year
-    var currentYear = new Date().getFullYear();
-    // Set the current year in the footer
-    document.getElementById("year").textContent = currentYear;
-</script>
-    </body>
 </html>
