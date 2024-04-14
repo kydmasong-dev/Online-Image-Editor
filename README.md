@@ -13,3 +13,7 @@ The Online Free Image Editor is a versatile tool that offers various editing fun
 - Converting, sharpening, and reducing the size of an animated GIF
 - Using the Cut Out Tool to make a heart-shaped image
 - Creating a glitter image of your own.
+
+### Preview Image of the "Image Editor"
+![Image Editor Preview](https://r2.easyimg.io/uajd019hs/image_editor.jpeg)
+
